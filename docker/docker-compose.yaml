@@ -1,0 +1,45 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:latest 
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=metrobus_db
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+    networks:
+      - dem
+  jupyter:
+    build: ./jupyter-notebook
+    environment:
+      - JUPYTER_ENABLE_LAB=yes # Enable JupyterLab (optional)
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./notebooks:/home/jovyan/work # Mount your local notebook folder to container
+    networks:
+      - dem
+    depends_on:
+      - db
+    command: 
+      start-notebook.sh --NotebookApp.token='' # Disable token authentication (optional)
+
+  app:
+    build: ./graphql-api
+    ports:
+      - "4000:4000"
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@localhost:5432/metrobus_db  
+    depends_on:
+      - db
+    networks:
+      - dem  
+
+networks:
+  dem:
+    driver: bridge
