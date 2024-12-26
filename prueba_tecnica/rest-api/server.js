@@ -4,7 +4,7 @@ const alcaldiasRoutes = require('./routes/alcaldias');
 const stopsRoutes = require('./routes/stops');
 
 const app = express();
-const PORT = 3001;
+const PORT = 3002;
 
 app.use(bodyParser.json());
 app.use('/api', alcaldiasRoutes);
