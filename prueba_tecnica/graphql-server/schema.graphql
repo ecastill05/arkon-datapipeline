@@ -1,0 +1,38 @@
+type Query {
+    stops(alcaldia: String!): [Stop]
+    alcaldias: [Alcaldia!]!
+}
+
+type Stop {
+    stop_id: String
+    stop_name: String
+}
+
+type Calendar {
+    service_id: String
+    monday: Boolean
+    tuesday: Boolean
+    wednesday: Boolean
+    thursday: Boolean
+    friday: Boolean
+    saturday: Boolean
+    sunday: Boolean
+    start_date: String
+    end_date: String
+}
+
+type Agency {
+    agency_id: String
+    agency_name: String
+    agency_url: String
+    agency_timezone: String
+    agency_lang: String
+    agency_phone: String
+    agency_fare_url: String
+    agency_email: String
+}
+
+type Alcaldia {
+    alcaldia_id: Int!
+    alcaldia_name: String!
+}
