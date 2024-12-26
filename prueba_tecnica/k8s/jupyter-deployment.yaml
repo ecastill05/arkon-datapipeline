@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jupyter
+  labels:
+    app: jupyter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jupyter
+  template:
+    metadata:
+      labels:
+        app: jupyter
+    spec:
+      containers:
+      - name: jupyter
+        image: jupyter/datascience-notebook:latest
+        ports:
+        - containerPort: 8888  # Default port for Jupyter Notebook
+        env:
+        - name: JUPYTER_ENABLE_LAB
+          value: "yes"  # Enable Jupyter Lab interface
+        - name: JUPYTER_TOKEN
+          value: ""  # No token required for easy access
+        volumeMounts:
+        - name: jupyter-notebooks
+          mountPath: /home/jovyan/work  # The default notebook storage location
+      volumes:
+      - name: jupyter-notebooks
+        persistentVolumeClaim:
+          claimName: jupyter-pvc  # The PersistentVolumeClaim to store notebooks
