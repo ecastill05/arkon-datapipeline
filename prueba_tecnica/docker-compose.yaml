@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest 
+    container_name: postgres_container
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=metrobus_db
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+    networks:
+      - dem
+  jupyter:
+    build:
+      context: ./jupyter-notebook
+    container_name: jupyter_container
+    ports:
+      - "8888:8888"
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+    networks:
+      - dem
+    volumes:
+      - ./notebooks:/home/jovyan/work
+    depends_on:
+      - postgres
+    command: 
+      start-notebook.sh --NotebookApp.token='' # Disable token authentication (optional)    
+
+  graphql:
+    build:
+      context: ./graphql-server
+    container_name: graphql_container
+    ports:
+      - "4000:4000"
+    networks:
+      - dem
+    depends_on:
+      - postgres  
+
+  rest-api:
+    build:
+      context: ./rest-api
+    container_name: rest_api_container
+    ports:
+      - "3001:3001"
+    networks:
+      - dem
+    depends_on:
+      - graphql
+networks:
+  dem:
+    driver: bridge
