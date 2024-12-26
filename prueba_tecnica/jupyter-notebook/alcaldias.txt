@@ -1,0 +1,17 @@
+alcaldia_id,alcaldia_name
+1,Azcapotzalco
+2,Coyoacán
+3,Cuajimalpa de Morelos
+4,Gustavo A. Madero
+5,Iztacalco
+6,Iztapalapa
+7,La Magdalena Contreras
+8,Milpa Alta
+9,Álvaro Obregón
+10,Tláhuac
+11,Tlalpan
+12,Xochimilco
+13,Benito Juárez
+14,Cuauhtémoc
+15,Miguel Hidalgo
+16,Venustiano Carranza
